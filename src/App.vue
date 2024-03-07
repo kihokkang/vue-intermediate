@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <BaseHeader></BaseHeader>
-    <BaseInputbox></BaseInputbox>
-    <BaseList></BaseList>
+    <BaseInputbox v-on:addTodoItem="addOneItem"></BaseInputbox>
+    <BaseList :propsdata="todoItems"></BaseList>
     <BaseFooter></BaseFooter>
   </div>
 </template>
@@ -20,6 +20,27 @@ export default {
     'BaseInputbox': BaseInputbox,
     'BaseList': BaseList,
     'BaseFooter': BaseFooter
+  },
+  data: function() {
+    return {
+      todoItems:[]
+    }
+  },
+  methods: {
+    addOneItem: function(todoItem) {
+      var obj = {completed: false, item: todoItem}
+      localStorage.setItem(todoItem, JSON.stringify(obj));
+      this.todoItems.push(obj);
+    }
+  },
+  created: function() {
+    if(localStorage.length > 0){
+      for(var i = 0; i < localStorage.length; i++){
+        if(localStorage.key(i) !== 'loglevel:webpack-dev-server'){
+          this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))))
+        }      
+      }
+    }
   }
 }
 </script>
