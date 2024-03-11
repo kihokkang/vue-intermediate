@@ -2,8 +2,10 @@
   <div id="app">
     <BaseHeader></BaseHeader>
     <BaseInputbox v-on:addTodoItem="addOneItem"></BaseInputbox>
-    <BaseList :propsdata="todoItems"></BaseList>
-    <BaseFooter></BaseFooter>
+    <BaseList :propsdata="todoItems" 
+      v-on:removeItem="removeOneItem" 
+      v-on:toggleItem="toggleOneItem"></BaseList>
+    <BaseFooter v-on:clearAll="clearAllItems"></BaseFooter>
   </div>
 </template>
 
@@ -31,6 +33,19 @@ export default {
       var obj = {completed: false, item: todoItem}
       localStorage.setItem(todoItem, JSON.stringify(obj));
       this.todoItems.push(obj);
+    },
+    removeOneItem : function(todoItem, index) {
+      localStorage.removeItem(todoItem.item);
+      this.todoItems.splice(index, 1);
+    },
+    toggleOneItem: function(todoItem, index) {
+      this.todoItems[index].completed = !this.todoItems[index].completed;
+      localStorage.removeItem(todoItem.item);
+      localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+    },
+    clearAllItems: function() {
+      this.todoItems = [];
+      localStorage.clear();
     }
   },
   created: function() {
