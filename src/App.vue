@@ -18,37 +18,37 @@ import BaseFooter from './components/BaseFooter.vue'
 export default {
   // 컴포넌트 태그명은 첫글자를 대문자로 주로 정의한다(파스칼)
   components:{
-    'BaseHeader': BaseHeader,
-    'BaseInputbox': BaseInputbox,
-    'BaseList': BaseList,
-    'BaseFooter': BaseFooter
+    BaseHeader,
+    BaseInputbox,
+    BaseList,
+    BaseFooter
   },
-  data: function() {
+  data() {
     return {
       todoItems:[]
     }
   },
   methods: {
-    addOneItem: function(todoItem) {
+    addOneItem(todoItem) {
       const obj = {completed: false, item: todoItem}
       localStorage.setItem(todoItem, JSON.stringify(obj));
       this.todoItems.push(obj);
     },
-    removeOneItem : function(todoItem, index) {
+    removeOneItem(todoItem, index) {
       localStorage.removeItem(todoItem.item);
       this.todoItems.splice(index, 1);
     },
-    toggleOneItem: function(todoItem, index) {
+    toggleOneItem(todoItem, index) {
       this.todoItems[index].completed = !this.todoItems[index].completed;
       localStorage.removeItem(todoItem.item);
       localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
     },
-    clearAllItems: function() {
+    clearAllItems() {
       this.todoItems = [];
       localStorage.clear();
     }
   },
-  created: function() {
+  created() {
     if(localStorage.length > 0){
       for(let i = 0; i < localStorage.length; i++){
         if(localStorage.key(i) !== 'loglevel:webpack-dev-server'){
